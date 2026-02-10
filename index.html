@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Adams AI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #1e1e1e;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .chat-container {
+      width: 400px;
+      height: 600px;
+      background: #2c2c2c;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(0,0,0,0.6);
+    }
+    #chatbox {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+    }
+    #chatbox div {
+      margin: 8px 0;
+      padding: 8px 12px;
+      border-radius: 10px;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+    .user {
+      background: #4CAF50;
+      align-self: flex-end;
+    }
+    .bot {
+      background: #2196F3;
+      align-self: flex-start;
+    }
+    .input-area {
+      display: flex;
+      border-top: 1px solid #444;
+    }
+    #userInput {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      background: #333;
+      color: white;
+    }
+    #sendBtn, #newChatBtn {
+      border: none;
+      padding: 12px 20px;
+      cursor: pointer;
+      color: white;
+      font-weight: bold;
+    }
+    #sendBtn {
+      background: #4CAF50;
+    }
+    #sendBtn:hover {
+      background: #45a049;
+    }
+    #newChatBtn {
+      background: #f44336;
+    }
+    #newChatBtn:hover {
+      background: #d32f2f;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div id="chatbox"></div>
+    <div class="input-area">
+      <input id="userInput" type="text" placeholder="Type a message..."/>
+      <button id="sendBtn">Send</button>
+      <button id="newChatBtn">New Chat</button>
+    </div>
+  </div>
+
+  <script>
+    const chatbox = document.getElementById("chatbox");
+    const input = document.getElementById("userInput");
+    const btn = document.getElementById("sendBtn");
+    const newChatBtn = document.getElementById("newChatBtn");
+
+    function addMessage(text, sender) {
+      const div = document.createElement("div");
+      div.className = sender;
+      div.innerHTML = text;
+      chatbox.appendChild(div);
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+   function cleanMessage(msg) {
+  return msg.toLowerCase().replace(/[.,!?]/g, "").trim();
+}
+
+function getTime() {
+  const now = new Date();
+  return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+    
+
+    function botReply(msg) {
+      msg = cleanMessage(msg);
+
+      const greetings = ["hello", "hey"];
+      if (greetings.some(word => msg.includes(word))) return "Hi there! 👋";
+
+      const howAreYou = ["how are you", "how's it going", "how you doing"];
+      if (howAreYou.some(word => msg.includes(word))) return "I’m doing great, thanks for asking! 😄";
+
+      const bye = ["bye", "goodbye", "see ya"];
+      if (bye.some(word => msg.includes(word))) return "See you later! 👋";
+
+      if (msg.includes("how old are you")) return "Well, I am an AI modeled after Adam so I guess I am 13.";
+      if (msg.includes("whats your name")) return "You can call me Chat.";
+      if (msg.includes("whats for dinner")) return "Cheese.";
+      if (msg.includes("your cool")) return "Thank you!";
+      if (msg.includes("who is your wife")) return "I am a model of Adam and Adam is not married yet.";
+      if (msg.includes("ok")) return "Thanks!";
+      if (msg.includes("who is adams family")) return "Aaron, Michael, and my Mum and Dad.";
+      if (msg.includes("i love you")) return "That's a bit sus.";
+      if (msg.includes("1")) return "2";
+      if (msg.includes("3")) return "4";
+      if (msg.includes("5")) return "Stop.";
+      if (msg.includes("good")) return "That's great to hear.";
+      if (msg.includes("tell me a joke")) return "jokes arnt unlocked yet.";
+      if (msg.includes("hi")) return "hay, how are you?";
+      if (msg.includes("sup")) return "hay mate.";
+      if (msg.includes("what time is it")) return "It’s " + getTime();
+      if (msg.includes("whats the time")) return "It’s " + getTime();
+
+
+
+
+      const unknownReplies = [
+        "My responses are limited. Try ask something else.",
+      ];
+      return unknownReplies[Math.floor(Math.random() * unknownReplies.length)];
+    }
+
+    function sendMessage() {
+      const text = input.value.trim();
+      if (!text) return;
+      addMessage(text, "user");
+      const reply = botReply(text);
+      setTimeout(() => addMessage(reply, "bot"), 500);
+      input.value = "";
+    }
+
+    btn.onclick = sendMessage;
+    input.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") sendMessage();
+    });
+
+    newChatBtn.onclick = () => {
+      chatbox.innerHTML = "";
+      addMessage("👋 New conversation started!", "bot");
+    };
+  </script>
+</body>
+</html>
