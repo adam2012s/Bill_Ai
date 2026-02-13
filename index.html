@@ -52,6 +52,7 @@ body {
   background:#333;
   color:white;
   border:none;
+  outline:none;
 }
 
 button {
@@ -72,7 +73,7 @@ button {
 <div id="chatbox"></div>
 
 <div class="input-area">
-<input id="userInput" placeholder="Type..." />
+<input id="userInput" placeholder="Type a message..." />
 <button id="sendBtn">Send</button>
 <button id="newChatBtn">New</button>
 </div>
@@ -215,8 +216,15 @@ return "Try something else 🙂";
 function send(){
 const t=input.value.trim();
 if(!t)return;
+
 addMessage(t,"user");
-setTimeout(()=>addMessage(botReply(t),"bot"),300);
+addMessage("Bill AI is typing...","bot");
+
+setTimeout(()=>{
+chatbox.lastChild.remove();
+addMessage(botReply(t),"bot");
+},800);
+
 input.value="";
 }
 
@@ -227,6 +235,4 @@ newChatBtn.onclick=()=>{chatbox.innerHTML="";addMessage("New chat started","bot"
 
 </body>
 </html>
-
-
 
